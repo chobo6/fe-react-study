@@ -10,6 +10,7 @@ import Props01 from './components/Props01';
 import Props02 from './components/Props02';
 import Quiz02 from './quiz/quiz02/Quiz02';
 import Quiz03 from './quiz/quiz03/Quiz03';
+import NewsBlog from './newsblog/NewsBlog';
 
 function App() {
   // return <Basic01 />
@@ -21,7 +22,8 @@ function App() {
   // return <Props01 />;
   // return <Props02 />;
   // return <Quiz02 />;
-  return <Quiz03 />;
+  // return <Quiz03 />;
+  return <NewsBlog />;
 
 
   /* return (
