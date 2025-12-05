@@ -26,9 +26,9 @@ function App() {
   // return <Props02 />;
   // return <Quiz02 />;
   // return <Quiz03 />;
-  // return <NewsBlog />;
+  return <NewsBlog />;
   // return <Quiz04 />;
-  return <Quiz05 />;
+  // return <Quiz05 />;
 
 
   /* return (

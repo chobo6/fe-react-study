@@ -18,6 +18,9 @@ function NewsBlog(){
 
     let [modalFlag, setModalFlag] = useState(false);
 
+    let [selectedTitle, setSelectedTitle] = useState('');
+    let [selectedLikeCount, setSelectedLikeCount] = useState(0);
+
     return(
         <div>
             <div className='black-nav'>
@@ -30,7 +33,10 @@ function NewsBlog(){
                     likeCount.push(0);
                     return  <div className='post-list'>
                                 <h4 onClick={()=>{
-                                setModalFlag(!modalFlag);
+                                setModalFlag(!modalFlag); // 모달창 표시 on/off 여부
+                                // 어떤 뉴스를 눌렀는지 그 뉴스 제목 -> 저장 ---> Modal props 전달
+                                setSelectedTitle(news);
+                                setSelectedLikeCount(likeCount[index]);
                             }}>{news} 
                             <span onClick={(event)=>{
                                         event.stopPropagation();
@@ -89,8 +95,16 @@ function NewsBlog(){
             {
                 // modalFlag == true ? <Modal /> : null
             }
+
+            <button onClick={()=>{
+                // 'Today News'
+                let temp = [...news];
+                temp[0] = 'Today News';
+                setNews(temp);
+            }}>첫글 제목 변경</button>
             {
-                modalFlag && <Modal />
+                modalFlag && <Modal news={news} setNews={setNews} bgColor={'lightblue'}
+                title={selectedTitle} likeCount={selectedLikeCount}/>
             }
         </div>
     )
