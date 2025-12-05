@@ -32,7 +32,6 @@ function NewsBlog(){
 
             {
                 news.map((news, index)=>{
-                    likeCount.push(0);
                     return  <div className='post-list'>
                                 <h4 onClick={()=>{
                                 setModalFlag(!modalFlag); // 모달창 표시 on/off 여부
@@ -113,9 +112,21 @@ function NewsBlog(){
                 }}/>
                 <button onClick={()=>{
                     // input 창에 입력된 value를 -> news 배열뒤에 push 추가
-                    
+
+                    // 추가하려는 텍스트 inputText
+                    // inputText 값이 비어있으면? 진행 x
+                    inputText = inputText.trim(); // 앞뒤 공백 제거
+                    // setInputText(inputText.trim());
+
+                    if(inputText == ''){
+                        alert("값을 입력하고 발행을 눌러주세요.");
+                        setInputText('');
+                        return;
+                    }
+
                     let temp = [...news];
                     temp.push(inputText);
+                    likeCount.push(0);
                     setNews(temp);
                     setInputText('');
 
