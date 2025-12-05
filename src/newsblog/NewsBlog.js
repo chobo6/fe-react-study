@@ -14,7 +14,7 @@ function NewsBlog(){
 
     let [news, setNews] = useState(['오늘의 뉴스', '어제의 뉴스', '내일의 뉴스']);
 
-    let [likeCount, setLikeCount] = useState([]);
+    let [likeCount, setLikeCount] = useState([0, 0, 0]);
 
     let [modalFlag, setModalFlag] = useState(false);
 
@@ -31,14 +31,14 @@ function NewsBlog(){
             </div>
 
             {
-                news.map((news, index)=>{
+                news.map((item, index)=>{
                     return  <div className='post-list'>
                                 <h4 onClick={()=>{
                                 setModalFlag(!modalFlag); // 모달창 표시 on/off 여부
                                 // 어떤 뉴스를 눌렀는지 그 뉴스 제목 -> 저장 ---> Modal props 전달
-                                setSelectedTitle(news);
+                                setSelectedTitle(item);
                                 setSelectedLikeCount(likeCount[index]);
-                            }}>{news} 
+                            }}>{item} 
                             <span onClick={(event)=>{
                                         event.stopPropagation();
                                         let temp = [...likeCount];
@@ -47,6 +47,18 @@ function NewsBlog(){
                                     }}>❤</span> {likeCount[index]}
                                 </h4>
                                 <p>내용</p>
+                                <button onClick={()=>{
+                                    // 누른 대상을 삭제
+                                    // 누른 대상의 index 위치 값을 제거
+
+                                    // splice 함수(index, 몇개)
+                                    let temp = [...news];
+                                    temp.splice(index, 1);
+                                    setNews(temp);
+
+                                    // 좋아요 갯수도 같이 삭제
+                                    likeCount.splice(index, 1);
+                                }}>삭제</button>
                             </div>
                 })
             }
