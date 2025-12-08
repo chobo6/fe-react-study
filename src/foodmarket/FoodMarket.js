@@ -14,6 +14,10 @@ import food3 from './img/food3.jpg';
 // 기준 data import
 import foodsData from './data/foodsData';
 import { useState } from 'react';
+import Home from './pages/Home';
+import CustomerService from './pages/CustomerService';
+
+import {Routes, Route, Link, useNavigate} from 'react-router';
 
 
 
@@ -21,18 +25,37 @@ function FoodMarket(){
 
     let [foods, setFoods] = useState(foodsData);
 
+    // 경로이동 <a href=...
+    // location.href = '...
+
+    // react-router
+    // Link to=..
+    // navigate(..)
+
+    let navigate = useNavigate();
+
     return(
         <div>
             <Navbar bg="light" data-bs-theme="light">
                 <Container>
-                    <Navbar.Brand href="#home">FoodMarket</Navbar.Brand>
+                    <Navbar.Brand onClick={()=>{ navigate('/') }}>FoodMarket</Navbar.Brand>
                     <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#features">Features</Nav.Link>
-                        <Nav.Link href="#pricing">Pricing</Nav.Link>
+                        <Nav.Link href="#home"><Link to="/">Home</Link></Nav.Link>
+                        {/* <Nav.Link href="#features"><Link to="/detail">FoodDetail</Link></Nav.Link> */}
+                        <Nav.Link onClick={()=>{ navigate('/detail') }}>FoodDetail</Nav.Link>
+                        <Nav.Link onClick={()=>{ navigate('/info') }}>Info</Nav.Link>
+                        <Nav.Link onClick={()=>{ navigate('/help') }}>고객센터</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
+            
+            <Routes>
+                <Route path="/" element={<Home foods={foods} />}></Route>
+                <Route path="/detail" element={<div><h1>detail page</h1></div>}></Route>
+                <Route path="/info" element={<div><h1>info page</h1></div>}></Route>
+                <Route path="/help" element={<CustomerService/>}></Route>
+            </Routes>
+
             {/*
                 이미지 사용
 
@@ -52,11 +75,11 @@ function FoodMarket(){
                 "homepage":"/detailPath" 상세경로 설정
              */}
             {/* <img src='{banner_bg}'/> */}
-            <div className='main-bg' style={{backgroundImage:'url(' + banner_bg + ')'}}></div>
+            {/* <div className='main-bg' style={{backgroundImage:'url(' + banner_bg + ')'}}></div> */}
 
             {/* <div className='main-bg'></div> */}
             
-            <Container>
+            {/* <Container>
                 <Row>
                     {
                         foods.map((food, index)=>{
@@ -66,7 +89,10 @@ function FoodMarket(){
                         })
                     }
                 </Row>
-            </Container>
+            </Container> */}
+
+
+
             {/* <Container>
                 <Row>
                     <Col md={4} sm={2}>
