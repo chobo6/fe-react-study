@@ -5,6 +5,35 @@ import './Detail.css';
 
 function Detail( {foods} ){
 
+    // localStorage 사용
+
+    // 읽기 localStorage.getItem(키)
+    // 쓰기 localStorage.setItem(키, 값)
+    // 삭제 localStorage.removeItem(키, 값)
+    localStorage.setItem('content1', '오늘은 날씨가 춥다');
+    localStorage.setItem('time', 1424);
+    console.log(localStorage.hi);
+
+
+    let tempFood = {
+        id : 'fd002',
+        title : "Hamburger",
+        content : "완전식품 햄버거",
+        price : 11000,
+        imgPath: '/images/food3.jpg',
+        stockCount: 0
+    }
+    // localStorage.setItem('tempFood', tempFood); // [object Object]
+    localStorage.setItem('tempFood', JSON.stringify(tempFood));
+
+    // JSON
+    // js객체 -> 문자열 JSON.stringify()
+
+    // 문자열 -> js객체 JSON.parse()
+    let jsonObj = JSON.parse(localStorage.getItem('tempFood'));
+    console.log(jsonObj.title);
+    console.log(jsonObj.price);
+
     let [orderCount, setOrderCount] = useState(0);
     let [test, setTest] = useState(0);
 
@@ -76,6 +105,7 @@ function Detail( {foods} ){
         }
     }, [])
 
+
     if(food == undefined || food == null){
         return(
             <div>
@@ -85,8 +115,111 @@ function Detail( {foods} ){
         )
     }
 
-                    // <div class="big box container">
 
+    // 스타일 적용
+
+    /* 
+        조건에 따라서 다른 스타일 적용
+        가격표시
+            1만원 이상 -> 빨간색
+            1만원 미만 -> 파란색
+
+            1) js 객체
+
+            // <p style={ {color:'red', fontSize:'20px'} }>{food.price}</p>
+
+            const priceTextStyle ={
+                color: food.price >= 10000 ? 'red' : 'blue'     // color:'red'   color:'blue'
+            }
+            <p style={priceTextStyle}>{food.price}</p>
+
+            // <p style={ {color: food.price >= 10000 ? 'red' : 'blue'} }>{food.price}</p>
+
+
+            2) js 함수 방식
+
+            const priceTextStyleFunc = (price)=>{
+                if(price >= 10000){
+                    return {color : 'red'};
+                } else {
+                    return {color : 'blue'};
+                }
+
+                // return {color: food.price >= 10000 ? 'red' : 'blue'};
+            }
+            <p style={priceTextStyleFunc(food.price)}>{food.price}</p>
+            
+
+            3) css 클래스 사용 연계
+
+            // 클래스 이름 단일
+            <p className={ food.price >= 10000 ? 'price-red' : 'price-blue' }>{food.price}</p>
+
+            // 여러개 클래스
+            <p className={ 'text-strong ' + (food.price >= 10000 ? 'price-red' : 'price-blue') }>{food.price}</p>
+
+            // className에 들어가는 변수형태로 활용
+            const priceTextClassName = (food.price >= 10000 ? 'price-red' : 'price-blue');
+            <p className={ 'text-strong ' + priceTextClassName }>{food.price}</p>
+
+            // 배열의 join 함수
+            ['text-strong', 'price-red'].join(" ")  'text-strong price-red'
+            <p className={ ['text-strong', (food.price >= 10000 ? 'price-red' : 'price-blue')].join(" ") }>{food.price}</p>
+    
+            // 백틱 문자 활용
+            <p className={ `text-strong ${food.price >= 10000 ? 'price-red' : 'price-blue'}` }>{food.price}</p>
+    
+            4) css 클래스 + useState + useEffect 조합 활용 -> 효과 발생
+
+            let [viewStatus, setViewStatus] = useState('');
+            useEffect(()=>{
+                setTimeout(()=>{
+                    setViewStatus('end')
+                }, 300)
+            }, [])
+
+            <Container className={"start " + viewStatus}>
+    */
+
+    const priceTextStyle ={
+        color: food.price >= 10000 ? 'red' : 'blue'     // color:'red'   color:'blue'
+    }
+    
+    const priceTextStyleFunc = (price)=>{
+        if(price >= 10000){
+            return {color : 'red'};
+        } else {
+            return {color : 'blue'};
+        }
+
+        // return {color: food.price >= 10000 ? 'red' : 'blue'};
+    }
+
+    const priceTextClassName = (food.price >= 10000 ? 'price-red' : 'price-blue');
+    
+    // js 객체로 내부에서 정의 후 사용
+
+    const styles = {
+
+        redStyle : {    // styles.redStyle
+            color: 'red'
+        },
+        blueStyle : {   // styles.blueStyle
+            color: 'blue'
+        },
+        fontBigBold: {  // styles.fontBigBold
+            fontSize: '36px',
+            fontWeight: 'bold'
+        },
+        titleStyle: {
+            paddingTop: '30px',
+            fontSize: '40px',
+            fontWeight: 'bold'
+        }
+
+    };
+
+    // <div class="big box container">
     return(
         <Container className={"start " + viewStatus}>
             <Row>
@@ -95,8 +228,20 @@ function Detail( {foods} ){
                 </Col>
                 <Col md={6}>
                     <h4 style={{ paddingTop: '30px' }}>{food.title}</h4>
-                    <p>{food.content}</p>
-                    <p>{food.price}</p>
+                    <p style={styles.fontBigBold}>{food.content}</p>
+
+                    <p style={priceTextStyle}>{food.price}</p>
+                    <p style={priceTextStyleFunc(food.price)}>{food.price}</p>
+                    <p className={ food.price >= 10000 ? 'price-red' : 'price-blue'}>{food.price}</p>
+                    <p className={ 'text-strong ' + (food.price >= 10000 ? 'price-red' : 'price-blue') }>{food.price}</p>
+                    <p className={ 'text-strong ' + priceTextClassName }>{food.price}</p>
+                    <p className={ ['text-strong', (food.price >= 10000 ? 'price-red' : 'price-blue')].join(" ") }>{food.price}</p>
+                    {/*             ['text-strong', 'price-red'] -> 'text-strong price-red
+                                    ['text-strong', 'price-blue'] -> 'text-strong price-blue 
+                                    배열.join(" ")
+                    */}
+                    <p className={ `text-strong ${food.price >= 10000 ? 'price-red' : 'price-blue'}` }>{food.price}</p>
+                    
                     <p>
                         <Button variant="dark" onClick={()=>{
                             if(orderCount > 0)
