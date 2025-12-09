@@ -99,13 +99,21 @@ function Detail( {foods} ){
                     <p>{food.price}</p>
                     <p>
                         <Button variant="dark" onClick={()=>{
+                            if(orderCount > 0)
+                                setOrderCount(orderCount - 1);
                             // orderCount <= 0 ? console.log('error') : setOrderCount(orderCount - 1);
                         }}>-</Button>
                         <span> {orderCount} </span>
                         <Button variant="dark" onClick={()=>{
+                            if(orderCount < food.stockCount)
+                                setOrderCount(orderCount + 1);
                             // orderCount >= food.stockCount ? console.log('error') : setOrderCount(orderCount + 1);
                         }}>+</Button>
                     </p>
+                    
+                    {
+                        food.stockCount == 0 ? <Button variant="secondary">품절</Button> : <Button variant="primary">주문하기</Button>
+                    }
                     
                 </Col>
             </Row>
