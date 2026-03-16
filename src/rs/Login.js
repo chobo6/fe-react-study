@@ -1,7 +1,7 @@
 import { useDebugValue, useState } from "react";
 import axios from "axios";
 import {useSelector, useDispatch} from 'react-redux';
-import { saveUserId, clearUserId } from "./store/store";
+import { saveUserId, clearUserId, saveUserInfo, setWeatherInfo } from "./store/store";
 
 function Login(){
 
@@ -29,6 +29,8 @@ function Login(){
     // let navigate =  useNavigate();  
     // navigate('/main');
 
+    let weather = useSelector((state)=>{return state.weather});
+    console.log(weather);
 
     return (
         <div>
@@ -43,6 +45,13 @@ function Login(){
                     //clearUserId();
                     dispatch(clearUserId());
                 }}>ClearUserId수행</button>
+                <button onClick={()=>{
+                    dispatch(saveUserInfo( {id:'qwer', name:'qqq' } ));
+                }}>SaveUserInfo수행</button>
+
+                <button onClick={()=>{
+                    dispatch( setWeatherInfo({weather:'rainy', temperature:-4, hmdt: 80}) );
+                }}>setWeatherInfo수행</button>
             </div>
 
             <h1>React Spring API Login</h1>
@@ -82,6 +91,29 @@ function Login(){
                             // 성공했으니, 마이페이지 혹은 다음페이지 혹은 메인페이지 등등 다른 페이지로 이동
                             // ReactRouter ->  navigate("/main")
                             console.log('로그인 성공');
+
+
+                            //로그인 성공 로직 -> redux 상태관리 
+                            // dispatch(saveUserId(id));
+
+                            // 나중에 다른 화면(컴포넌트)에서 현재 로그인 여부 판별을 위해 로그인 아이디를 조회
+                            // let user = useSelector((state)=>{return state.user});
+
+                            /* 서버 응답이 다음과 같은 json 포맷 데이터라면?
+                            response.data = {
+                                header:{
+                                    resultCode:10,
+                                    resultMsg:"로그인성공"
+                                },
+                                body :{
+                                    loginUserId: 'abc'
+                                }
+                            }
+                            
+                            if(response.data.header.resultCode == 10){
+                                dispatch(saveUserId( response.data.body.loginUserId ));
+                            */
+
                         } else { //로그인 실패
                             // 로그인 실패
                             // 다시시도하라고 안내문구
