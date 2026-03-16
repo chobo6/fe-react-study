@@ -1,13 +1,50 @@
-import { useState } from "react";
+import { useDebugValue, useState } from "react";
 import axios from "axios";
+import {useSelector, useDispatch} from 'react-redux';
+import { saveUserId, clearUserId } from "./store/store";
 
 function Login(){
 
     let [id, setId] = useState('');
     let [pw, setPw] = useState('');
 
+
+    //redux 개념 적용
+    // 로그인 시도 -> BE API -> 결과 응답 -> ok, no 
+    // 로그인 성공 -> 성공한 사용자 ID redux 상태관리 -> ...로직 -> 페이지 이동
+
+    //redux 에 저장된 값에 접근 사용
+    let reduxState = useSelector((state) => {return state});
+
+    console.log(reduxState);
+    console.log(reduxState.user);
+
+    let user = useSelector((state) => {return state.user});
+    console.log(user);
+
+    // redux 저장용으로 만들어둔 store에 있는 slice 값 을 변경하는... action 함수 호출을 하려면
+    // 단순함수호출X ->  dispatch 에 감싸서 요청해야한다 dispatch(호출할함수(내용))
+    let dispatch = useDispatch();
+
+    // let navigate =  useNavigate();  
+    // navigate('/main');
+
+
     return (
         <div>
+
+            <h1>Redux 값 테스트</h1>
+            <div>
+                <button onClick={()=>{
+                    // saveUserId('abcdef');  단순 함수 호출 XXX
+                    dispatch(saveUserId('abcdef')); //redux 관련 action 호출
+                }}>SaveUserId수행</button>
+                <button onClick={()=>{
+                    //clearUserId();
+                    dispatch(clearUserId());
+                }}>ClearUserId수행</button>
+            </div>
+
             <h1>React Spring API Login</h1>
 
             <p> id :  <input type="text" onChange={(e)=>{setId(e.target.value)}}></input> </p>
